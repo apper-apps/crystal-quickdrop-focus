@@ -2,7 +2,7 @@ import { generateId } from '@/utils/generateId';
 import { generateShareLink } from '@/utils/generateShareLink';
 import mockFiles from '@/services/mockData/files.json';
 // Mock upload service
-export const uploadFile = async (file) => {
+export const uploadFile = async (file, password = null) => {
   // Simulate network delay
   await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000));
   
@@ -19,9 +19,130 @@ export const uploadFile = async (file) => {
     size: file.size,
     type: file.type,
     uploadDate: new Date().toISOString(),
-    shareLink: generateShareLink(fileId),
+    shareLink: generateShareLink(fileId, password),
     thumbnailUrl: file.type.startsWith('image/') ? URL.createObjectURL(file) : null,
-    progress: 100
+    progress: 100,
+    isPasswordProtected: !!password
+  };
+};
+
+export const updateFilePassword = async (fileId, password) => {
+  // Simulate network delay
+  await new Promise(resolve => setTimeout(resolve, 300));
+  
+  return {
+    Id: fileId,
+    shareLink: generateShareLink(fileId, password),
+    isPasswordProtected: !!password,
+    success: true
+  };
+};
+// Mock upload service
+export const uploadFile = async (file, password = null) => {
+  // Simulate network delay
+  await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000));
+  
+  // Simulate occasional failures (10% chance)
+  if (Math.random() < 0.1) {
+    throw new Error('Upload failed - network error');
+  }
+  
+  const fileId = generateId();
+  
+  return {
+    Id: fileId,
+    name: file.name,
+    size: file.size,
+    type: file.type,
+    uploadDate: new Date().toISOString(),
+    shareLink: generateShareLink(fileId, password),
+    thumbnailUrl: file.type.startsWith('image/') ? URL.createObjectURL(file) : null,
+    progress: 100,
+    isPasswordProtected: !!password
+  };
+};
+
+export const updateFilePassword = async (fileId, password) => {
+  // Simulate network delay
+  await new Promise(resolve => setTimeout(resolve, 300));
+  
+  return {
+    Id: fileId,
+    shareLink: generateShareLink(fileId, password),
+    isPasswordProtected: !!password,
+    success: true
+  };
+};
+// Mock upload service
+export const uploadFile = async (file, password = null) => {
+  // Simulate network delay
+  await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000));
+  
+  // Simulate occasional failures (10% chance)
+  if (Math.random() < 0.1) {
+    throw new Error('Upload failed - network error');
+  }
+  
+  const fileId = generateId();
+  
+  return {
+    Id: fileId,
+    name: file.name,
+    size: file.size,
+    type: file.type,
+    uploadDate: new Date().toISOString(),
+    shareLink: generateShareLink(fileId, password),
+    thumbnailUrl: file.type.startsWith('image/') ? URL.createObjectURL(file) : null,
+    progress: 100,
+    isPasswordProtected: !!password
+  };
+};
+
+export const updateFilePassword = async (fileId, password) => {
+  // Simulate network delay
+  await new Promise(resolve => setTimeout(resolve, 300));
+  
+  return {
+    Id: fileId,
+    shareLink: generateShareLink(fileId, password),
+    isPasswordProtected: !!password,
+    success: true
+  };
+};
+// Mock upload service
+export const uploadFile = async (file, password = null) => {
+  // Simulate network delay
+  await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000));
+  
+  // Simulate occasional failures (10% chance)
+  if (Math.random() < 0.1) {
+    throw new Error('Upload failed - network error');
+  }
+  
+  const fileId = generateId();
+  
+  return {
+    Id: fileId,
+    name: file.name,
+    size: file.size,
+    type: file.type,
+    uploadDate: new Date().toISOString(),
+    shareLink: generateShareLink(fileId, password),
+    thumbnailUrl: file.type.startsWith('image/') ? URL.createObjectURL(file) : null,
+    progress: 100,
+    isPasswordProtected: !!password
+  };
+};
+
+export const updateFilePassword = async (fileId, password) => {
+  // Simulate network delay
+  await new Promise(resolve => setTimeout(resolve, 300));
+  
+  return {
+    Id: fileId,
+    shareLink: generateShareLink(fileId, password),
+    isPasswordProtected: !!password,
+    success: true
   };
 };
 
