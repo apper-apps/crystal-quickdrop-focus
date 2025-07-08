@@ -1,17 +1,21 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { toast } from 'react-toastify';
-import DropZone from '@/components/molecules/DropZone';
-import FileCard from '@/components/molecules/FileCard';
-import SharePanel from '@/components/molecules/SharePanel';
-import FilePreviewModal from '@/components/molecules/FilePreviewModal';
-import { uploadFile } from '@/services/api/uploadService';
-import { generateShareLink } from '@/utils/generateShareLink';
+import React, { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { toast } from "react-toastify";
+import HistoryPanel from "@/components/organisms/HistoryPanel";
+import { generateShareLink } from "@/utils/generateShareLink";
+import ApperIcon from "@/components/ApperIcon";
+import Button from "@/components/atoms/Button";
+import DropZone from "@/components/molecules/DropZone";
+import FileCard from "@/components/molecules/FileCard";
+import FilePreviewModal from "@/components/molecules/FilePreviewModal";
+import SharePanel from "@/components/molecules/SharePanel";
+import { uploadFile } from "@/services/api/uploadService";
 
 const FileUploader = () => {
   const [files, setFiles] = useState([]);
   const [previewFile, setPreviewFile] = useState(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
 
   const handleFileSelect = (selectedFiles) => {
     const newFiles = selectedFiles.map(file => ({
@@ -98,12 +102,30 @@ const FileUploader = () => {
     setPreviewFile(null);
   };
 
-  return (
+return (
     <div className="max-w-4xl mx-auto p-6 space-y-8">
-      {/* Drop Zone */}
-      <DropZone onFileSelect={handleFileSelect} />
+      {/* Header with History Toggle */}
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-display font-bold text-gray-900">
+          {showHistory ? 'Upload History' : 'QuickDrop'}
+        </h1>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setShowHistory(!showHistory)}
+          className="flex items-center space-x-2"
+        >
+          <ApperIcon name={showHistory ? "Upload" : "History"} className="w-4 h-4" />
+          <span>{showHistory ? 'Upload Files' : 'View History'}</span>
+        </Button>
+      </div>
 
-      {/* File List */}
+      {!showHistory ? (
+        <>
+          {/* Drop Zone */}
+          <DropZone onFileSelect={handleFileSelect} />
+
+          {/* File List */}
       <AnimatePresence>
         {files.length > 0 && (
           <motion.div
@@ -128,10 +150,18 @@ const FileUploader = () => {
             </div>
           </motion.div>
         )}
-      </AnimatePresence>
+</AnimatePresence>
 
-      {/* Share Panel */}
-      <SharePanel files={files} />
+          {/* Share Panel */}
+          <SharePanel files={files} />
+        </>
+      ) : (
+        /* History Panel */
+        <HistoryPanel 
+          onPreview={handlePreview}
+          onCopyLink={handleCopyLink}
+        />
+      )}
 
       {/* Preview Modal */}
       <FilePreviewModal
